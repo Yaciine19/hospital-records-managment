@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import authRoute from "./routes/authRoute.js";
-import recordRoute from './routes/recordRoute.js';
+import recordRoute from './routes/RecordRoute.js';
 import events from './routes/eventStream.js'
 import bodyParser from "body-parser";
 
