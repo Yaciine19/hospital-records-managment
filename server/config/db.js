@@ -1,9 +1,11 @@
-const mongoose = require('mongoose');
-require('dotenv').config();
+import mongoose from 'mongoose';
+import dotenv from 'dotenv'
+
+dotenv.config();
 
 const MONGO_URI = process.env.MONGO_URI;
 
-const connectDB = async () => {
+export const connectDB = async () => {
     try {
         await mongoose.connect(MONGO_URI);
         console.log('MongoDB connected successfully');
@@ -13,7 +15,7 @@ const connectDB = async () => {
     }
 };
 
-const disconnectDB = async () => {
+export const disconnectDB = async () => {
     try {
         await mongoose.disconnect();
         console.log('MongoDB disconnected successfully');
@@ -21,5 +23,3 @@ const disconnectDB = async () => {
         console.error('Error disconnecting from MongoDB:', error.message);
     }
 };
-
-module.exports = { connectDB, disconnectDB };
