@@ -2,11 +2,6 @@ import React, { useEffect, useState } from "react";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LuTrash2 } from "react-icons/lu";
-import { PRIORITY_DATA } from "../../utils/data";
-import SelectDropDown from "../../components/Inputs/SelectDropDown";
-import SelectUsers from "../../components/Inputs/SelectUsers";
-import TodoListInput from "../../components/Inputs/TodoListInput";
-import { AddAttachmentsInput } from "../../components/Inputs/AddAttachmentsInput";
 import axoisInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import toast from "react-hot-toast";
@@ -19,17 +14,22 @@ function CreateTask() {
   const { taskId } = location.state || {};
   const navigate = useNavigate();
 
-  const [taskData, setTaskData] = useState({
-    title: "",
-    description: "",
-    priority: "Low",
-    dueDate: null,
-    assignedTo: [],
-    todoCheckList: [],
-    attachments: [],
+  const [recordData, setRecordData] = useState({
+    ArabicFullName: "",
+    LatinFullName: "",
+    BirthDate: null,
+    City: "",
+    Wilaya: "",
+    Gender: "",
+    parents: {
+      fatherName: "",
+      motherName: ""
+    },
+    SignedBy: "",
+    DateOfDeath: null,
+    PlaceOfDeath: "",
+    CauseOfDeath: "",
   });
-
-  const [currentTask, setCurrentTask] = useState(null);
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -37,43 +37,47 @@ function CreateTask() {
   const [openDeleteAlert, setOpenDeleteAlert] = useState(false);
 
   const handleValueChange = (key, value) => {
-    setTaskData((prevData) => ({ ...prevData, [key]: value }));
+    setRecordData((prevData) => ({ ...prevData, [key]: value }));
   };
 
   const clearData = () => {
     // reset form
-    setTaskData({
-      title: "",
-      description: "",
-      priority: "Low",
-      dueDate: null,
-      assignedTo: [],
-      todoCheckList: [],
-      attachments: [],
+    setRecordData({
+      ArabicFullName: "",
+      LatinFullName: "",
+      BirthDate: null,
+      City: "",
+      Wilaya: "",
+      Gender: "",
+      parents: {
+        fatherName: "",
+        motherName: ""
+      },
+      SignedBy: "",
+      DateOfDeath: null,
+      PlaceOfDeath: "",
+      CauseOfDeath: "",
     });
   };
 
-  // Create Task
-  const createTask = async () => {
+  // Create record
+  const createRecord = async () => {
     setLoading(true);
 
     try {
-      const todolist = taskData.todoCheckList?.map((item) => ({
-        text: item,
-        completed: false,
-      }));
-
-      await axoisInstance.post(API_PATHS.TASKS.CREATE_TASK, {
-        ...taskData,
-        dueDate: new Date(taskData.dueDate).toISOString(),
-        todoCheckList: todolist,
+      await axoisInstance.post(API_PATHS.RECORD.CREATE_RECORD, {
+        ...recordData,
+        BirthDate:new Date(recordData.BirthDate).toISOString(),
+        DateOfDeath: recordData.DateOfDeath ? new Date(recordData?.DateOfDeath)?.toISOString() : null,
+        PlaceOfDeath: recordData.PlaceOfDeath ? recordData.PlaceOfDeath : null,
+        CauseOfDeath: recordData.CauseOfDeath ? recordData.CauseOfDeath : null,
       });
 
-      toast.success("Task Created Successfully");
+      toast.success("Record Added Successfully");
 
       clearData();
     } catch (error) {
-      console.error("Error creating task: ", error);
+      console.error("Error creating record: ", error);
       setLoading(false);
     } finally {
       setLoading(false);
@@ -81,57 +85,49 @@ function CreateTask() {
   };
 
   // Update Task
-  const updateTask = async () => {
+  const updateRecord = async () => {
     setLoading(false);
 
     try {
-      const todolist = taskData.todoCheckList?.map((item) => {
-        const prevTodoCheckList = currentTask?.todoCheckList || [];
-        const matchedTask = prevTodoCheckList.find((task) => task.text == item);
-
-        return {
-          text: item,
-          completed: matchedTask ? matchedTask.completed : false,
-        };
-      });
-
       await axoisInstance.put(API_PATHS.TASKS.UPDATE_TASK(taskId), {
-        ...taskData,
-        dueDate: new Date(taskData.dueDate).toISOString(),
-        todoCheckList: todolist,
+        ...recordData,
+        BirthDate: new Date(recordData.BirthDate).toISOString(),
+        DateOfDeath: recordData.DateOfDeath ? new Date(recordData?.DateOfDeath)?.toISOString() : null,
+        PlaceOfDeath: recordData.PlaceOfDeath ? recordData.PlaceOfDeath : null,
+        CauseOfDeath: recordData.CauseOfDeath ? recordData.CauseOfDeath : null,
       });
 
-      toast.success("Task Updated Seccessfully");
+      toast.success("Record Updated Seccessfully");
     } catch (error) {
-      console.error("Error update task :", error);
+      console.error("Error update record :", error);
       setLoading(false);
     } finally {
       setLoading(false);
     }
   };
 
-  // Get Task info by ID
-  const getTaskDetailsByID = async () => {
+  // Get record info by ID
+  const getRecordDetailsByID = async () => {
     try {
       const response = await axoisInstance.get(
         API_PATHS.TASKS.GET_TASK_BY_ID(taskId)
       );
 
       if (response.data) {
-        const taskInfo = response.data;
-        setCurrentTask(taskInfo);
+        const recordInfo = response.data;
 
-        setTaskData(() => ({
-          title: taskInfo.title,
-          description: taskInfo.description,
-          priority: taskInfo.priority,
-          dueDate: taskInfo.dueDate
-            ? moment(taskInfo.dueDate).format("YYYY-MM-DD")
-            : null,
-          assignedTo: taskInfo?.assignedTo?.map((item) => item?._id) || [],
-          todoCheckList:
-            taskInfo?.todoCheckList?.map((item) => item?.text) || [],
-          attachments: taskInfo?.attachemnts || [],
+        setRecordData(() => ({
+          ArabicFullName: recordInfo.ArabicFullName,
+          LatinFullName: recordInfo.LatinFullName,
+          BirthDate: recordInfo.BirthDate ? moment(recordInfo.BirthDate).format('YYY-MM-DD') : null ,
+          City: recordInfo.City,
+          Wilaya: recordInfo.Wilaya,
+          Gender: recordInfo.Gender,
+          parents: {},
+          SignedBy: recordInfo.SignedBy,
+          DateOfDeath: recordInfo.DateOfDeath ? moment(recordInfo.DateOfDeath).format('YYY-MM-DD') : null,
+          PlaceOfDeath: recordInfo.PlaceOfDeath,
+          CauseOfDeath: recordInfo.CauseOfDeath,
         }));
       }
     } catch (error) {
@@ -139,17 +135,17 @@ function CreateTask() {
     }
   };
 
-  // Delete Task
+  // Delete Record
   const deleteTask = async () => {
     try {
       await axoisInstance.delete(API_PATHS.TASKS.DELETE_TASK(taskId));
 
       setOpenDeleteAlert(false);
-      toast.success("Expense details deleted successfully");
+      toast.success("Record deleted successfully");
       navigate("/admin/tasks");
     } catch (error) {
       console.error(
-        "Error Deleting Task : ",
+        "Error Deleting Record : ",
         error.response?.data?.message || error.message
       );
     }
@@ -158,39 +154,60 @@ function CreateTask() {
   const handleSubmit = async () => {
     setError(null);
 
-    // Input validation
-    if (!taskData.title.trim()) {
-      setError("Title is required.");
+    // // Input validation
+    if (!recordData.ArabicFullName.trim()) {
+      setError("Arabic Full Name is required.");
       return;
     }
-    if (!taskData.description.trim()) {
-      setError("Description is required.");
+    if (!recordData.LatinFullName.trim()) {
+      setError("Latin Full Name is required.");
       return;
     }
-    if (!taskData.dueDate) {
-      setError("Due date is required.");
+    if (!recordData.BirthDate) {
+      setError("Birth Date is required.");
       return;
     }
-    if (taskData.assignedTo?.length === 0) {
-      setError("Task not assigned to any member.");
+    if (!recordData.Gender) {
+      setError("Gender is required.");
       return;
     }
-    if (taskData.assignedTo?.length === 0) {
-      setError("Add atleast one todo task.");
+
+    if (!recordData.City) {
+      setError("Gender is required.");
+      return;
+    }
+
+    if (!recordData.Wilaya) {
+      setError("Gender is required.");
+      return;
+    }
+
+    if (!recordData.parents.fatherName) {
+      setError("father name is required.");
+      return;
+    }
+
+    if (!recordData.parents.motherName) {
+      setError("mother name is required.");
+      return;
+    }
+
+    if (!recordData.SignedBy) {
+      setError("Signed By is required.");
       return;
     }
 
     if (taskId) {
-      updateTask();
+      updateRecord();
       return;
     }
 
-    createTask();
+    createRecord();
   };
 
   useEffect(() => {
     if (taskId) {
-      getTaskDetailsByID(taskId);
+      getRecordDetailsByID(taskId);
     }
 
     return () => {};
@@ -199,11 +216,11 @@ function CreateTask() {
   return (
     <DashboardLayout activeMenu={"Add Record"}>
       <div className="mt-5">
-        <div className="grid grid-cols-1 md:grid-cols-4 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 mt-4">
           <div className="form-card col-span-3">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-medium">
-                {taskId ? "Update Task" : "Add Record"}
+                {taskId ? "Update Record" : "Add Record"}
               </h2>
 
               {taskId && (
@@ -225,8 +242,10 @@ function CreateTask() {
                 <input
                   placeholder="Arabic full name"
                   className="form-input"
-                  value={taskData.title}
-                  onChange={(e) => handleValueChange("title", e.target.value)}
+                  value={recordData.ArabicFullName}
+                  onChange={(e) =>
+                    handleValueChange("ArabicFullName", e.target.value)
+                  }
                 />
               </div>
 
@@ -238,7 +257,7 @@ function CreateTask() {
                 <input
                   placeholder="Latin full name"
                   className="form-input"
-                  value={taskData.dueDate}
+                  value={recordData.LatinFullName}
                   onChange={(e) =>
                     handleValueChange("LatinFullName", e.target.value)
                   }
@@ -252,13 +271,11 @@ function CreateTask() {
                 </label>
 
                 <select
-                  name=""
-                  id=""
+                  name="Gender"
+                  id="Gender"
                   className="form-input"
-                  value={taskData.dueDate}
-                  onChange={(e) =>
-                    handleValueChange("LatinFullName", e.target.value)
-                  }
+                  value={recordData.Gender}
+                  onChange={(e) => handleValueChange("Gender", e.target.value)}
                 >
                   <option value="">Select gender</option>
                   <option value="Male">Male</option>
@@ -275,7 +292,7 @@ function CreateTask() {
 
                 <input
                   className="form-input"
-                  value={taskData.dueDate}
+                  value={recordData.BirthDate}
                   onChange={(e) =>
                     handleValueChange("BirthDate", e.target.value)
                   }
@@ -291,7 +308,7 @@ function CreateTask() {
                 <input
                   placeholder="City"
                   className="form-input"
-                  value={taskData.title}
+                  value={recordData.City}
                   onChange={(e) => handleValueChange("City", e.target.value)}
                 />
               </div>
@@ -304,7 +321,7 @@ function CreateTask() {
                 <input
                   placeholder="Wilaya"
                   className="form-input"
-                  value={taskData.dueDate}
+                  value={recordData.dueDate}
                   onChange={(e) => handleValueChange("Wilaya", e.target.value)}
                   type="text"
                 />
@@ -320,25 +337,86 @@ function CreateTask() {
                 <input
                   placeholder="Father full name"
                   className="form-input"
-                  value={taskData.Father}
-                  onChange={(e) => handleValueChange("Father", e.target.value)}
+                  value={recordData.parents.fatherName}
+                  onChange={(e) => handleValueChange("parents", {motherName: recordData.parents.motherName, fatherName: e.target.value})}
                 />
               </div>
 
               <div className="col-span-6 md:col-span-4 mt-3">
                 <label className="text-xs font-medium text-slate-600">
-                Mother full name
+                  Mother full name
                 </label>
 
                 <input
                   placeholder="Mother full name"
                   className="form-input"
-                  value={taskData.Mother}
-                  onChange={(e) =>
-                    handleValueChange("Mother", e.target.value)
-                  }
+                  value={recordData.parents.motherName}
+                  onChange={(e) => handleValueChange("parents", {fatherName: recordData.parents.fatherName, motherName: e.target.value})}
                   type="text"
                 />
+              </div>
+            </div>
+
+            <div>
+              <label className="text-xs font-medium text-slate-600">
+                Signed By
+              </label>
+
+              <input
+                className="form-input"
+                value={recordData.SignedBy}
+                onChange={(e) => handleValueChange("SignedBy", e.target.value)}
+                type="text"
+              />
+            </div>
+
+            <div className="grid grid-cols-12 gap-4 mt-3">
+              <div className="col-span-6 md:col-span-4">
+                <label className="text-xs font-medium text-slate-600">
+                  Date of death
+                </label>
+
+                <input
+                  className="form-input"
+                  value={recordData.DateOfDeath}
+                  onChange={(e) =>
+                    handleValueChange("DateOfDeath", e.target.value)
+                  }
+                  type="date"
+                />
+              </div>
+
+              <div className="col-span-6 md:col-span-4">
+                <label className="text-xs font-medium text-slate-600">
+                  Place of death
+                </label>
+
+                <input
+                  placeholder="Place of death"
+                  className="form-input"
+                  value={recordData.PlaceOfDeath}
+                  onChange={(e) =>
+                    handleValueChange("PlaceOfDeath", e.target.value)
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="mt-3">
+              <div className="col-span-6 md:col-span-4">
+                <label className="text-xs font-medium text-slate-600">
+                  Cause of death
+                </label>
+
+                <textarea
+                  placeholder="Cause of death"
+                  className="form-input"
+                  rows={4}
+                  value={recordData.CauseOfDeath}
+                  onChange={(e) =>
+                    handleValueChange("CauseOfDeath", e.target.value)
+                  }
+                ></textarea>
               </div>
             </div>
 
