@@ -1,14 +1,6 @@
 import mongoose from "mongoose"
 
-const RecordSchema = new mongoose.Schema({
-    ArabicFullName: {
-        type: String,
-        required: true,
-    },
-    LatinFullName: {
-        type: String,
-        required: true,
-    },
+const AnonymSchema = new mongoose.Schema({
     BirthDate: {
         type: Date,
         default: Date.now,
@@ -26,10 +18,6 @@ const RecordSchema = new mongoose.Schema({
         enum: ["Male", "Female"],
         required: true,
     },
-    parents: {
-        fatherName: String,
-        motherName: String
-    },
     SignedBy: {
         type: String,
         required: true,
@@ -45,5 +33,5 @@ const RecordSchema = new mongoose.Schema({
         type: String,
     },
 })
-const Record = mongoose.model('Record', RecordSchema)
-export default Record;
+const Anonym = mongoose.model('Anonym', AnonymSchema)
+export default Anonym;
