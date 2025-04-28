@@ -5,7 +5,10 @@ export const API_PATHS = {
   AUTH: {
     REGISTER: "/api/auth/register", // Register a new user (Admin or Member)
     LOGIN: "/api/v1/auth/login", // Authenticate user & return JWT token
-    GET_PROFILE: "/api/auth/profile", // Get logged-in user details
+  },
+
+  RECORD: {
+    CREATE_RECORD : "/api/addRecord", // Create a new Record
   },
 
   USERS: {

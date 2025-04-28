@@ -4,6 +4,7 @@ import cors from "cors";
 import authRoute from "./routes/authRoute.js";
 import recordRoute from './routes/recordRoute.js';
 import bodyParser from "body-parser";
+import { connectDB } from "./config/db.js";
 
 const PORT = 5000;
 
@@ -21,7 +22,8 @@ app.use('/', recordRoute);
 
 app.listen(PORT, async () => {
   try {
-    console.log(`server running ${PORT}`);
+    await connectDB();
+      console.log(`server running ${PORT}`);
   }
   catch (err) {
     console.log(err.message);
