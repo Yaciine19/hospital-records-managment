@@ -1,7 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import EmployeeRoute from './routes/EmployeeRoute.js';
+import RecordRoute from './routes/RecordRoute.js';
+import UserRoute from './routes/UserRoute.js';
 import bodyParser from "body-parser";
 
 const PORT = 5000;
@@ -14,7 +15,8 @@ app.use(express.json());
 app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 
-app.use('/', EmployeeRoute);
+// app.use('/', RecordRoute);
+app.use('/', UserRoute);
 
 
 
