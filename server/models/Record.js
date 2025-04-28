@@ -11,7 +11,7 @@ const RecordSchema = new mongoose.Schema({
     },
     BirthDate: {
         type: Date,
-        default: Date.now(),
+        default: Date.now,
     },
     City: {
         type: String,
@@ -26,13 +26,23 @@ const RecordSchema = new mongoose.Schema({
         enum: ["Male", "Female"],
         required: true,
     },
-    Father: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Record',
+    parents: {
+        fatherName: String,
+        motherName: String
     },
-    Mother: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Record',
-    }
+    SignedBy: {
+        type: String,
+        required: true,
+    },
+    DateOfDeath: {
+        type: Date,
+        default: null,
+    },
+    PlaceOfDeath: {
+        type: String,
+    },
+    CauseOfDeath: {
+        type: String,
+    },
 })
 export const Record = mongoose.model('Record', RecordSchema)
