@@ -27,6 +27,9 @@ This system provides a comprehensive solution for recording, managing, and monit
 - **JWT** - JSON Web Tokens for authentication
 - **bcrypt** - Password hashing
 - **Server-Sent Events** - Real-time notifications
+- **react** - Javascript framework to crate robust single page apps
+- **axios** - A promise-based HTTP Client for node.js and the browser
+- **tailwindcss** - An open source CSS framework
 
 ## Project Structure
 
@@ -156,7 +159,19 @@ birthEventSource.onmessage = function(event) {
 - **Role**: User role (admin/standard user)
 
 ### Record Model
-Contains information about birth and death records (specific fields not provided in the code snippet).
+- **ArabicFullName**: Full name in Arabic (required)
+- **LatinFullName**: Full name in Latin script (required)
+- **BirthDate**: Date of birth (defaults to current date if not provided)
+- **City**: City of birth or residence (required)
+- **Wilaya**: Province/region name (required)
+- **Gender**: Gender ("Male" or "Female") (required)
+- **parents**:
+  - **fatherName**: Father's name (optional)
+  - **motherName**: Mother's name (optional)
+- **SignedBy**: Name of the official who signed the record (required)
+- **DateOfDeath**: Date of death (optional, defaults to null)
+- **PlaceOfDeath**: Place where death occurred (optional)
+- **CauseOfDeath**: Cause of death (optional)
 
 ### Anonym Model
 Stores anonymized data with the following fields:
