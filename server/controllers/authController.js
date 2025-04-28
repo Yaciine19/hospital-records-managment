@@ -16,12 +16,6 @@ export const registerUser = async (req, res) => {
     await connectDB();
     const { PhoneNumber, Password, Organization, FullName, Role } = req.body;
 
-    const userExists = await User.findOne({ PhoneNumber });
-
-    if (userExists) {
-      return res.status(400).json({ message: "User already exsits" });
-    }
-
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(Password, salt);
 

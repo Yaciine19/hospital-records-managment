@@ -72,7 +72,7 @@ function Login() {
             onChange={(e) => setPhoneNumber(e.target.value)}
             label={"Phone Number"}
             placeholder={"+213"}
-            type={"number"}
+            type={"text"}
           />
           <Input
             value={Password}
