@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import authRoute from "./routes/authRoute.js";
 import recordRoute from './routes/recordRoute.js';
+import events from './routes/eventStream.js'
 import bodyParser from "body-parser";
 
 const PORT = 5000;
@@ -18,6 +19,7 @@ app.use(bodyParser.json())
 
 app.use('/api/v1/auth', authRoute);
 app.use('/', recordRoute);
+app.use(events)
 
 app.listen(PORT, async () => {
   try {
