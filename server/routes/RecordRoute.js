@@ -3,9 +3,9 @@ import { addRecord, deleteRecord, getRecords, updateRecord } from '../controller
 
 const router = express.Router();
 
-router.post('/api/addRecord', addRecord);
-router.get('/api/getRecords', getRecords);
-router.put('/api/updateRecord', updateRecord);
-router.delete('/api/deleteRecord', deleteRecord);
+router.post('/api/addUser', addRecord);
+router.get('/api/getUsers', getRecords);
+router.put('/api/updateUser', updateRecord);
+router.delete('/api/deleteUser', deleteRecord);
 
 export default router;

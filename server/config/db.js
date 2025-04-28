@@ -1,44 +1,23 @@
-import mongoose from "mongoose";
-import dotenv from "dotenv";
+import mongoose from 'mongoose';
 
-// Load environment variables
-dotenv.config();
-
-// Get MongoDB URI from environment variables
-const MONGO_URI = process.env.MONGO_URI;
-
-let isConnected = false;
-
-// Function to connect to MongoDB
 export const connectDB = async () => {
-    // Check if already connected to MongoDB
-    if (isConnected) return;
-
     try {
-        // Attempt to connect to MongoDB using the URI from environment variables
-        await mongoose.connect(MONGO_URI, {
+        const connection = await mongoose.connect(process.env.MONGO_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
-        isConnected = true;
-        console.log("MongoDB connected successfully");
+        console.log('MongoDB connected:', connection.connection.host);
     } catch (error) {
-        console.error("Error connecting to MongoDB:", error.message);
-        process.exit(1); // Exit the process with a failure code
+        console.error('Error connecting to MongoDB:', error.message);
+        process.exit(1); 
     }
 };
 
-// Function to disconnect from MongoDB
 export const disconnectDB = async () => {
-    // Check if already disconnected
-    if (!isConnected) return;
-
     try {
-        // Attempt to disconnect from MongoDB
         await mongoose.disconnect();
-        isConnected = false;
-        console.log("MongoDB disconnected successfully");
+        console.log('MongoDB disconnected');
     } catch (error) {
-        console.error("Error disconnecting from MongoDB:", error.message);
+        console.error('Error disconnecting from MongoDB:', error.message);
     }
 };
