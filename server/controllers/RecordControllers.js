@@ -1,5 +1,6 @@
 import { connectDB, disconnectDB } from "../config/db.js";
-import { Record } from "../models/Record.js";
+import Record from "../models/Record.js";
+import { createAnonym } from "./AnonymController.js";
 
 export const getRecords = async (req, res) => {
     try {
@@ -21,6 +22,7 @@ export const addRecord = async (req, res) => {
         const newRecord = new Record(req.body);
 
         await newRecord.save();
+        await createAnonym(req.body);
         res.status(201).json({ message: "Manual record created successfully" });
 
     } catch (error) {

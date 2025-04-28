@@ -5,6 +5,6 @@ import { protect } from "../middlewares/authMiddleware.js";
 const authRoute = Router();
 
 authRoute.post("/login", loginUser);
-authRoute.post("/register", protect, registerUser);
+authRoute.post("/register", registerUser);
 
 export default authRoute;

@@ -1,32 +1,5 @@
-import { User } from '../models/User.js';
+import  User  from '../models/User.js';
 import { connectDB, disconnectDB } from '../config/db.js';
-
-export const createUser = async (req, res) => {
-    try {
-        await connectDB();
-
-        const { PhoneNumber, Organization, FullName, Role } = req.body;
-
-        const existingUser = await User.findOne({ PhoneNumber });
-        if (existingUser) {
-            return res.status(400).json({ message: 'User with this phone number already exists' });
-        }
-
-        const newUser = new User({
-            PhoneNumber,
-            Organization,
-            FullName,
-            Role
-        });
-
-        await newUser.save();
-        res.status(201).json({ message: 'User created successfully!', user: newUser });
-    } catch (err) {
-        res.status(400).json({ message: 'Error creating user', error: err.message });
-    } finally {
-        await disconnectDB();
-    }
-};
 
 export const getUsers = async (req, res) => {
     try {

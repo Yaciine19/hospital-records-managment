@@ -7,6 +7,10 @@ const UserSchema = new mongoose.Schema({
         match: /^[0-9]{10}$/,
         unique: true
     },
+    Password: {
+        type: String,
+        required: true
+    },
     Organization: {
         type: String,
         enum: ["Hospital", "DSP", "Municipal"],
@@ -24,4 +28,5 @@ const UserSchema = new mongoose.Schema({
     }
 });
 
-export const User = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', UserSchema);
+export default User;
