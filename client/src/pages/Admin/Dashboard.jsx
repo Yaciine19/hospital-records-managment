@@ -2,73 +2,94 @@ import { useContext, useEffect, useState } from "react";
 import { useUserAuth } from "../../hooks/useUserAuth";
 import { UserContext } from "../../context/UserContext";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import axoisInstance from "../../utils/axiosInstance";
 import moment from "moment";
+import { API_PATHS } from "../../utils/apiPaths";
+import RecordsTable from "../../components/RecordsTable";
 
 function Dashboard() {
   useUserAuth();
   const { user } = useContext(UserContext);
-  const navigate = useNavigate();
+  const [records, setRecords] = useState([]);
+  // const navigate = useNavigate();
 
-  const [birthEvents, setBirthEvents] = useState([]);
-  const [deathEvents, setDeathEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  // const [birthEvents, setBirthEvents] = useState([]);
+  // const [deathEvents, setDeathEvents] = useState([]);
+  // const [loading, setLoading] = useState(true);
+  // const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchInitialData = async () => {
-      try {
-        setLoading(true);
-        const birthResponse = await axoisInstance.get("api/eventsBirth");
-        const deathResponse = await axoisInstance.get("api/eventsDeath");
+  // useEffect(() => {
+  //   const fetchInitialData = async () => {
+  //     try {
+  //       setLoading(true);
+  //       const birthResponse = await axoisInstance.get("api/eventsBirth");
+  //       const deathResponse = await axoisInstance.get("api/eventsDeath");
 
-        setBirthEvents(birthResponse.data || []);
-        setDeathEvents(deathResponse.data || []);
-      } catch (err) {
-        console.error("Error fetching events: ", err);
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       setBirthEvents(birthResponse.data || []);
+  //       setDeathEvents(deathResponse.data || []);
+  //     } catch (err) {
+  //       console.error("Error fetching events: ", err);
+  //       setError(err);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchInitialData();
-  }, []);
+  //   fetchInitialData();
+  // }, []);
 
-  useEffect(() => {
-    const birthEventSource = new EventSource('api/eventsBirth/stream');
+  // useEffect(() => {
+  //   const birthEventSource = new EventSource('api/eventsBirth/stream');
 
-    birthEventSource.onmessage = (event) => {
-      const newEvent = JSON.parse(event.data);
-      setBirthEvents(prevEvents => [...prevEvents, newEvent]);
-    };
+  //   birthEventSource.onmessage = (event) => {
+  //     const newEvent = JSON.parse(event.data);
+  //     setBirthEvents(prevEvents => [...prevEvents, newEvent]);
+  //   };
 
-    const deathEventSource = new EventSource('api/eventsDeath/stream');
+  //   const deathEventSource = new EventSource('api/eventsDeath/stream');
 
-    deathEventSource.onmessage = (event) => {
-      const newEvent = JSON.parse(event.data);
-      setDeathEvents(prevEvents => [...prevEvents, newEvent]);
-    };
+  //   deathEventSource.onmessage = (event) => {
+  //     const newEvent = JSON.parse(event.data);
+  //     setDeathEvents(prevEvents => [...prevEvents, newEvent]);
+  //   };
 
-    const handleError = (err) => {
-      console.error("EventSource error:", err);
-      setError(err);
-    };
+  //   const handleError = (err) => {
+  //     console.error("EventSource error:", err);
+  //     setError(err);
+  //   };
 
-    birthEventSource.onerror = handleError;
-    deathEventSource.onerror = handleError;
+  //   birthEventSource.onerror = handleError;
+  //   deathEventSource.onerror = handleError;
 
-    return () => {
-      birthEventSource.close();
-      deathEventSource.close();
-    };
-  }, []);
+  //   return () => {
+  //     birthEventSource.close();
+  //     deathEventSource.close();
+  //   };
+  // }, []);
   
 
-  if(loading || error) {
-    return <div><h1>error or loading</h1></div>
-  }
+  // if(loading || error) {
+  //   return <div><h1>error or loading</h1></div>
+  // }
+
+  const GetAllRecords = async () => {
+    try {
+      const response = await axoisInstance.get(
+        API_PATHS.RECORD.GET_ALL_RECORD
+      );
+
+      if (response.data) {
+        setRecords(response.data)
+      }
+    } catch (error) {
+      console.error("Error fetching records: ", error);
+    }
+  };
+
+  useEffect(()=> {
+    GetAllRecords();
+  }, [])
 
   return (
     <DashboardLayout activeMenu="Dashboard">
@@ -87,6 +108,16 @@ function Dashboard() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap6 my-4 md:my-6">
+
+        <div className="md:col-span-2">
+          <div className="card">
+            <div className="flex items-center justify-between">
+              <h5 className="text-lg">Recent Records</h5>
+            </div>
+
+            <RecordsTable tableData={records} />
+          </div>
+        </div>
       </div>
     </DashboardLayout>
   );

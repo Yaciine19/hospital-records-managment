@@ -9,8 +9,6 @@ export const getUsers = async (req, res) => {
         res.status(200).json(users);
     } catch (err) {
         res.status(400).json({ message: 'Error fetching users', error: err.message });
-    } finally {
-        await disconnectDB();
     }
 };
 
@@ -25,9 +23,7 @@ export const getUserById = async (req, res) => {
         res.status(200).json(user);
     } catch (err) {
         res.status(400).json({ message: 'Error fetching user', error: err.message });
-    } finally {
-        await disconnectDB();
-    }
+    } 
 };
 
 export const updateUser = async (req, res) => {
@@ -57,8 +53,6 @@ export const updateUser = async (req, res) => {
         res.status(200).json({ message: 'User updated successfully', user });
     } catch (err) {
         res.status(400).json({ message: 'Error updating user', error: err.message });
-    } finally {
-        await disconnectDB();
     }
 };
 
@@ -73,7 +67,5 @@ export const deleteUser = async (req, res) => {
         res.status(200).json({ message: 'User deleted successfully' });
     } catch (err) {
         res.status(400).json({ message: 'Error deleting user', error: err.message });
-    } finally {
-        await disconnectDB();
     }
 };

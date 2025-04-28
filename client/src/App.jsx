@@ -9,10 +9,7 @@ import Login from "./pages/Auth/Login";
 import PrivateRoute from "./routes/PrivateRoute";
 import Dashboard from "./pages/Admin/Dashboard";
 import ManageUsers from "./pages/Admin/ManageUsers";
-import CreateTask from "./pages/Admin/AddRecord";
-import DashboardUser from "./pages/User/Dashboard";
-import MyTasks from "./pages/User/MyTasks";
-import ViewTaskDetails from "./pages/User/ViewTaskDetails";
+import AddRecord from "./pages/Admin/AddRecord";
 import UserProvider, { UserContext } from "./context/UserContext";
 import { useContext } from "react";
 import { Toaster } from "react-hot-toast";
@@ -29,19 +26,9 @@ export default function App() {
             {/* Admin Routes */}
             <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
               <Route path="/admin/dashboard" element={<Dashboard />} />
-              <Route path="/admin/add-record" element={<CreateTask />} />
+              <Route path="/admin/add-record" element={<AddRecord/>} />
               <Route path="/admin/users" element={<ManageUsers />} />
               <Route path="/admin/add-user" element={<AddUser />} />
-            </Route>
-
-            {/* User Routes */}
-            <Route element={<PrivateRoute allowedRoles={["member"]} />}>
-              <Route path="/user/dashboard" element={<DashboardUser />} />
-              <Route path="/user/tasks" element={<MyTasks />} />
-              <Route
-                path="/user/task-details/:id"
-                element={<ViewTaskDetails />}
-              />
             </Route>
 
             {/* Default Route */}

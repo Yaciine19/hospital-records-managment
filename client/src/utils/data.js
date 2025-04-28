@@ -21,7 +21,7 @@ export const SIDE_MENU_DATA = [
   },
   {
     id: "03",
-    label: "Team Members",
+    label: "All Employees",
     icon: LuUsers,
     path: "/admin/users",
   },
@@ -42,12 +42,6 @@ export const SIDE_MENU_USER_DATA = [
   },
   {
     id: "02",
-    label: "My Tasks",
-    icon: LuClipboardCheck,
-    path: "/user/tasks",
-  },
-  {
-    id: "03",
     label: "Logout",
     icon: LuLogOut,
     path: "logout",

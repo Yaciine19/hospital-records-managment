@@ -9,9 +9,9 @@ import moment from "moment";
 import DeleteAlert from "../../components/DeleteAlert";
 import Modal from "../../components/Modal";
 
-function CreateTask() {
+function AddRecord() {
   const location = useLocation();
-  const { taskId } = location.state || {};
+  const { recordId } = location.state || {};
   const navigate = useNavigate();
 
   const [recordData, setRecordData] = useState({
@@ -89,7 +89,7 @@ function CreateTask() {
     setLoading(false);
 
     try {
-      await axoisInstance.put(API_PATHS.TASKS.UPDATE_TASK(taskId), {
+      await axoisInstance.put(API_PATHS.TASKS.UPDATE_TASK(recordId), {
         ...recordData,
         BirthDate: new Date(recordData.BirthDate).toISOString(),
         DateOfDeath: recordData.DateOfDeath ? new Date(recordData?.DateOfDeath)?.toISOString() : null,
@@ -110,7 +110,7 @@ function CreateTask() {
   const getRecordDetailsByID = async () => {
     try {
       const response = await axoisInstance.get(
-        API_PATHS.TASKS.GET_TASK_BY_ID(taskId)
+        API_PATHS.TASKS.GET_TASK_BY_ID(recordId)
       );
 
       if (response.data) {
@@ -131,18 +131,18 @@ function CreateTask() {
         }));
       }
     } catch (error) {
-      console.error("Error fetching task data : ", error);
+      console.error("Error fetching record data : ", error);
     }
   };
 
   // Delete Record
-  const deleteTask = async () => {
+  const deleteUser = async () => {
     try {
-      await axoisInstance.delete(API_PATHS.TASKS.DELETE_TASK(taskId));
+      await axoisInstance.delete(API_PATHS.TASKS.DELETE_TASK(recordId));
 
       setOpenDeleteAlert(false);
       toast.success("Record deleted successfully");
-      navigate("/admin/tasks");
+      navigate("/admin/dashboard");
     } catch (error) {
       console.error(
         "Error Deleting Record : ",
@@ -197,7 +197,7 @@ function CreateTask() {
       return;
     }
 
-    if (taskId) {
+    if (recordId) {
       updateRecord();
       return;
     }
@@ -206,12 +206,12 @@ function CreateTask() {
   };
 
   useEffect(() => {
-    if (taskId) {
-      getRecordDetailsByID(taskId);
+    if (recordId) {
+      getRecordDetailsByID(recordId);
     }
 
     return () => {};
-  }, [taskId]);
+  }, [recordId]);
 
   return (
     <DashboardLayout activeMenu={"Add Record"}>
@@ -220,10 +220,10 @@ function CreateTask() {
           <div className="form-card col-span-3">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-medium">
-                {taskId ? "Update Record" : "Add Record"}
+                {recordId ? "Update Record" : "Add Record"}
               </h2>
 
-              {taskId && (
+              {recordId && (
                 <button
                   className="flex items-center gap-1.5 text-[13px] font-medium text-rose-500 bg-rose-50 rounded px-2 py-1 border border-rose-100 hover:border-rose-300 cursor-pointer"
                   onClick={() => setOpenDeleteAlert(true)}
@@ -430,7 +430,7 @@ function CreateTask() {
                 onClick={handleSubmit}
                 disabled={loading}
               >
-                {taskId ? "UPDATE Record" : "Add Record"}
+                {recordId ? "UPDATE Record" : "Add Record"}
               </button>
             </div>
           </div>
@@ -444,11 +444,11 @@ function CreateTask() {
       >
         <DeleteAlert
           content="Are you sure you want to delete this record?"
-          onDelete={() => deleteTask()}
+          onDelete={() => deleteUser()}
         />
       </Modal>
     </DashboardLayout>
   );
 }
 
-export default CreateTask;
+export default AddRecord;

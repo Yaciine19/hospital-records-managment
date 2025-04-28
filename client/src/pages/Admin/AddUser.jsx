@@ -10,13 +10,15 @@ import Modal from "../../components/Modal";
 
 function AddUser() {
   const location = useLocation();
-  const { taskId } = location.state || {};
+  const { uesrId } = location.state || {};
   const navigate = useNavigate();
 
   const [userData, setUserData] = useState({
+    FullName: "",
     PhoneNumber: "",
     Password: "",
     Role: "",
+    Organization: "",
   });
 
   const [error, setError] = useState("");
@@ -44,9 +46,8 @@ function AddUser() {
     setLoading(true);
 
     try {
-      await axoisInstance.post(API_PATHS.RECORD.CREATE_RECORD, {
-        userData,
-      });
+      await axoisInstance.post(API_PATHS.USERS.CREATE_USER,
+        userData);
 
       toast.success("User Added Successfully");
 
@@ -64,7 +65,7 @@ function AddUser() {
     setLoading(false);
 
     try {
-      await axoisInstance.put(API_PATHS.TASKS.UPDATE_TASK(taskId), {
+      await axoisInstance.put(API_PATHS.TASKS.UPDATE_TASK(uesrId), {
         userData,
       });
 
@@ -81,7 +82,7 @@ function AddUser() {
   const getUserDetailsByID = async () => {
     try {
       const response = await axoisInstance.get(
-        API_PATHS.TASKS.GET_TASK_BY_ID(taskId)
+        API_PATHS.TASKS.GET_TASK_BY_ID(uesrId)
       );
 
       if (response.data) {
@@ -101,11 +102,11 @@ function AddUser() {
   // Delete Record
   const deleteUser = async () => {
     try {
-      await axoisInstance.delete(API_PATHS.TASKS.DELETE_TASK(taskId));
+      await axoisInstance.delete(API_PATHS.TASKS.DELETE_TASK(uesrId));
 
       setOpenDeleteAlert(false);
       toast.success("Record deleted successfully");
-      navigate("/admin/tasks");
+      navigate("/admin/dashboard");
     } catch (error) {
       console.error(
         "Error Deleting Record : ",
@@ -123,6 +124,11 @@ function AddUser() {
       return;
     }
 
+    if (!userData.PhoneNumber) {
+      setError("Phone Number is required.");
+      return;
+    }
+
     if (!userData.Password) {
       setError("Password is required.");
       return;
@@ -133,7 +139,12 @@ function AddUser() {
       return;
     }
 
-    if (taskId) {
+    if (!userData.Organization) {
+      setError("Organization is required.");
+      return;
+    }
+
+    if (uesrId) {
       updateUser();
       return;
     }
@@ -142,12 +153,12 @@ function AddUser() {
   };
 
   useEffect(() => {
-    if (taskId) {
-      getUserDetailsByID(taskId);
+    if (uesrId) {
+      getUserDetailsByID(uesrId);
     }
 
     return () => {};
-  }, [taskId]);
+  }, [uesrId]);
 
   return (
     <DashboardLayout activeMenu={"Add Record"}>
@@ -156,10 +167,10 @@ function AddUser() {
           <div className="form-card col-span-3">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-medium">
-                {taskId ? "Update Record" : "Add Record"}
+                {uesrId ? "Update Record" : "Add Record"}
               </h2>
 
-              {taskId && (
+              {uesrId && (
                 <button
                   className="flex items-center gap-1.5 text-[13px] font-medium text-rose-500 bg-rose-50 rounded px-2 py-1 border border-rose-100 hover:border-rose-300 cursor-pointer"
                   onClick={() => setOpenDeleteAlert(true)}
@@ -175,13 +186,13 @@ function AddUser() {
               </label>
 
               <input
-                placeholder="Arabic full name"
+                placeholder="Full name"
                 className="form-input"
-                value={userData.PhoneNumber}
+                value={userData.FullName}
                 onChange={(e) =>
-                  handleValueChange("PhoneNumber", e.target.value)
+                  handleValueChange("FullName", e.target.value)
                 }
-                type="number"
+                type="text"
               />
             </div>
 
@@ -191,7 +202,7 @@ function AddUser() {
               </label>
 
               <input
-                placeholder="Arabic full name"
+                placeholder="Phone number"
                 className="form-input"
                 value={userData.PhoneNumber}
                 onChange={(e) =>
@@ -207,7 +218,7 @@ function AddUser() {
               </label>
 
               <input
-                placeholder="Latin full name"
+                placeholder="password"
                 className="form-input"
                 value={userData.Password}
                 onChange={(e) => handleValueChange("Password", e.target.value)}
@@ -226,7 +237,7 @@ function AddUser() {
                 onChange={(e) => handleValueChange("Role", e.target.value)}
               >
                 <option value="">Select Role</option>
-                <option value="Super Admin">Super Admin</option>
+                <option value="SuperAdmin">Super Admin</option>
                 <option value="Admin">Admin</option>
                 <option value="User">User</option>
               </select>
@@ -238,16 +249,16 @@ function AddUser() {
               </label>
 
               <select
-                name="Gender"
-                id="Gender"
+                name="Organization"
+                id="Organization"
                 className="form-input"
-                value={userData.Role}
-                onChange={(e) => handleValueChange("Role", e.target.value)}
+                value={userData.Organization}
+                onChange={(e) => handleValueChange("Organization", e.target.value)}
               >
                 <option value="">Select Organization</option>
-                <option value="Super Admin">Super Admin</option>
-                <option value="Admin">Admin</option>
-                <option value="User">User</option>
+                <option value="Hospital">Hospital</option>
+                <option value="DSP">DSP</option>
+                <option value="Municipal">Municipal</option>
               </select>
             </div>
 
@@ -261,7 +272,7 @@ function AddUser() {
                 onClick={handleSubmit}
                 disabled={loading}
               >
-                {taskId ? "UPDATE User" : "Add User"}
+                {uesrId ? "UPDATE User" : "Add User"}
               </button>
             </div>
           </div>

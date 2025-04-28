@@ -19,8 +19,6 @@ export const createAnonym = async (data) => {
     } catch (error) {
         console.error('Error creating anonym:', error.message);
         throw new Error('Error creating anonym record');
-    } finally {
-        await disconnectDB();
     }
 };
 
@@ -31,8 +29,6 @@ export const getAnonyms = async (req, res) => {
         res.status(200).json(anonymRecords);
     } catch (err) {
         res.status(400).json({ message: 'Error fetching anonym records', error: err.message });
-    } finally {
-        await disconnectDB();
     }
 };
 
@@ -46,9 +42,7 @@ export const getAnonymById = async (req, res) => {
         res.status(200).json(anonym);
     } catch (err) {
         res.status(400).json({ message: 'Error fetching anonym record', error: err.message });
-    } finally {
-        await disconnectDB();
-    }
+    } 
 };
 
 export const updateAnonym = async (req, res) => {
@@ -71,8 +65,6 @@ export const updateAnonym = async (req, res) => {
         res.status(200).json({ message: 'Anonym record updated successfully', anonym });
     } catch (err) {
         res.status(400).json({ message: 'Error updating anonym record', error: err.message });
-    } finally {
-        await disconnectDB();
     }
 };
 
@@ -86,7 +78,5 @@ export const deleteAnonym = async (req, res) => {
         res.status(200).json({ message: 'Anonym record deleted successfully' });
     } catch (err) {
         res.status(400).json({ message: 'Error deleting anonym record', error: err.message });
-    } finally {
-        await disconnectDB();
     }
 };

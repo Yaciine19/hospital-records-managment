@@ -4,7 +4,6 @@ const UserSchema = new mongoose.Schema({
     PhoneNumber: {
         type: String,
         required: true,
-        match: /^[0-9]{10}$/,
         unique: true
     },
     Password: {

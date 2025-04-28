@@ -42,12 +42,7 @@ function Login() {
         localStorage.setItem("token", token);
         updateUser(response.data);
 
-        // Redirect based on role
-        if (Role === "Admin") {
-          navigate("/admin/dashboard");
-        } else {
-          navigate("/user/dashboard");
-        }
+        navigate("/admin/dashboard");
       }
     } catch (error) {
       console.log(error)

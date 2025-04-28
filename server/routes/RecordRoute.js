@@ -4,9 +4,9 @@ import { protect } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
-router.post('/api/addRecord', protect, addRecord);
+router.post('/api/addRecord', addRecord);
 router.get('/api/getRecords', getRecords);
-router.put('/api/updateRecord', protect, updateRecord);
-router.delete('/api/deleteRecord', protect, deleteRecord);
+router.put('/api/updateRecord', updateRecord);
+router.delete('/api/deleteRecord', deleteRecord);
 
 export default router;

@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 
-app.use('/api/v1/auth', authRoute);
+app.use('/', authRoute);
 app.use(events)
 app.use('/', RecordRoute);
 app.use('/', UserRoute);

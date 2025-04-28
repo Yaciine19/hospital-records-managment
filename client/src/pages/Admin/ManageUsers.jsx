@@ -27,14 +27,14 @@ function ManageUsers() {
   }, []);
 
   return (
-    <DashboardLayout activeMenu={"Team Members"}>
+    <DashboardLayout activeMenu={"All Employees"}>
       <div className="mt-5 mb-10">
         <div className="flex md:flex-row md:items-center justify-between">
-          <h2 className="text-xl font-medium">Team Members</h2>
+          <h2 className="text-xl font-medium">Employees</h2>
 
           <Link to={"/admin/add-user"} className="flex items-center justify-center border px-6 py-2 bg-primary text-white font-medium hover:bg-blue-500 rounded">
             <LuFileSpreadsheet className="text-lg mr-2" />
-            Add User
+            Add Employee
           </Link>
         </div>
 

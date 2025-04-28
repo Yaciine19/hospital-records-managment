@@ -22,14 +22,11 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ message: "User already exsits" });
     }
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(Password, salt);
-
     const newUser = await User.create({
-      PhoneNumber,
-      Password: hashedPassword,
-      Organization,
       FullName,
+      PhoneNumber,
+      Password,
+      Organization,
       Role,
     });
 
@@ -56,7 +53,7 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid phone number or password" });
     }
 
-    const isMatch = await bcrypt.compare(Password, user.Password);
+    const isMatch = Password == user.Password;
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid phone number or password" });
     }

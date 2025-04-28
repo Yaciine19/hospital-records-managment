@@ -10,8 +10,6 @@ export const getRecords = async (req, res) => {
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ message: "Server Error" });
-    } finally {
-        await disconnectDB();
     }
 };
 
@@ -28,9 +26,7 @@ export const addRecord = async (req, res) => {
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ message: "Server Error" });
-    } finally {
-        await disconnectDB();
-    }
+    } 
 };
 
 export const updateRecord = async (req, res) => {
@@ -45,8 +41,6 @@ export const updateRecord = async (req, res) => {
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ message: "Server Error" });
-    } finally {
-        await disconnectDB();
     }
 };
 
@@ -62,7 +56,5 @@ export const deleteRecord = async (req, res) => {
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ message: "Server Error" });
-    } finally {
-        await disconnectDB();
-    }
+    } 
 };
