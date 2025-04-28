@@ -1,4 +1,4 @@
-import { Anonym } from '../models/Anonym.js';
+import Anonym from '../models/Anonym.js';
 import { connectDB, disconnectDB } from '../config/db.js';
 
 export const createAnonym = async (data) => {

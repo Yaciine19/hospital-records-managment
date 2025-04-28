@@ -45,4 +45,5 @@ const RecordSchema = new mongoose.Schema({
         type: String,
     },
 })
-export const Record = mongoose.model('Record', RecordSchema)
+const Record = mongoose.model('Record', RecordSchema)
+export default Record;
