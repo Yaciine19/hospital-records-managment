@@ -26,7 +26,7 @@ app.use('/', UserRoute);
 
 app.listen(PORT, async () => {
   try {
-    await connectDB();
+    await connectDB()
       console.log(`server running ${PORT}`);
   }
   catch (err) {
