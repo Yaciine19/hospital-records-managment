@@ -17,9 +17,16 @@ app.use(express.urlencoded({extended: false}));
 app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 
+<<<<<<< HEAD
 app.use('/api/v1/auth', authRoute);
 app.use('/', recordRoute);
 app.use(events)
+=======
+app.use('/', RecordRoute);
+app.use('/', UserRoute);
+
+
+>>>>>>> edff8bb (anonyme crud)
 
 app.listen(PORT, async () => {
   try {
