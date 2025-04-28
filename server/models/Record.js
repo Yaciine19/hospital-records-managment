@@ -5,7 +5,7 @@ const RecordSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    ArabicFullName: {
+    LatinFullName: {
         type: String,
         required: true,
     },
@@ -35,4 +35,4 @@ const RecordSchema = new mongoose.Schema({
         ref: 'Record',
     }
 })
-module.exports = mongoose.model('Record', RecordSchema)
+export const Record = mongoose.model('Record', RecordSchema)
