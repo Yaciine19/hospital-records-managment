@@ -51,18 +51,19 @@ export const registerUser = async (req, res) => {
   
       const user = await Employee.findOne({ PhoneNumber });
       if (!user) {
-        return res.status(401).json({ message: "Invalid email or password" });
+        return res.status(401).json({ message: "Invalid phone number or password" });
       }
   
       const isMatch = await bcrypt.compare(Password, user.Password);
       if (!isMatch) {
-        return res.status(401).json({ message: "Invalid email or password" });
+        return res.status(401).json({ message: "Invalid phone number or password" });
       }
   
       res.status(200).json({
         _id: user._id,
-        FullName: user.FullName,
         PhoneNumber: user.PhoneNumber,
+        Organization: user.Organization,
+        FullName: user.FullName,
         Role: user.Role,
         token: generateToken(user._id),
       });

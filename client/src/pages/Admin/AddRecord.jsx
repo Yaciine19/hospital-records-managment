@@ -197,13 +197,13 @@ function CreateTask() {
   }, [taskId]);
 
   return (
-    <DashboardLayout activeMenu={"Create Task"}>
+    <DashboardLayout activeMenu={"Add Record"}>
       <div className="mt-5">
         <div className="grid grid-cols-1 md:grid-cols-4 mt-4">
           <div className="form-card col-span-3">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-medium">
-                {taskId ? "Update Task" : "Create Task"}
+                {taskId ? "Update Task" : "Add Record"}
               </h2>
 
               {taskId && (
@@ -216,101 +216,130 @@ function CreateTask() {
               )}
             </div>
 
-            <div className="mt-4">
-              <label className="text-xs font-medium text-slate-600">
-                Task Title
-              </label>
-
-              <input
-                placeholder="Create App UI"
-                className="form-input"
-                value={taskData.title}
-                onChange={(e) => handleValueChange("title", e.target.value)}
-              />
-            </div>
-
-            <div className="mt-3">
-              <label className="text-xs font-medium text-slate-600">
-                Description
-              </label>
-
-              <textarea
-                placeholder="Describe task"
-                className="form-input"
-                rows={4}
-                value={taskData.description}
-                onChange={(e) =>
-                  handleValueChange("description", e.target.value)
-                }
-              ></textarea>
-            </div>
-
-            <div className="grid grid-cols-12 gap-4 mt-2">
+            <div className="grid grid-cols-12 gap-4 mt-3">
               <div className="col-span-6 md:col-span-4">
                 <label className="text-xs font-medium text-slate-600">
-                  Priority
+                  Arabic full Name
                 </label>
 
-                <SelectDropDown
-                  options={PRIORITY_DATA}
-                  value={taskData.priority}
-                  onChange={(value) => handleValueChange("priority", value)}
-                  placeholder="Select Priority"
+                <input
+                  placeholder="Arabic full name"
+                  className="form-input"
+                  value={taskData.title}
+                  onChange={(e) => handleValueChange("title", e.target.value)}
                 />
               </div>
 
               <div className="col-span-6 md:col-span-4">
                 <label className="text-xs font-medium text-slate-600">
-                  Due Date
+                  Latin full name
                 </label>
 
                 <input
-                  placeholder="Create App UI"
+                  placeholder="Latin full name"
                   className="form-input"
                   value={taskData.dueDate}
-                  onChange={(e) => handleValueChange("dueDate", e.target.value)}
+                  onChange={(e) =>
+                    handleValueChange("LatinFullName", e.target.value)
+                  }
+                  type="text"
+                />
+              </div>
+
+              <div className="col-span-6 md:col-span-4">
+                <label className="text-xs font-medium text-slate-600">
+                  Gender
+                </label>
+
+                <select
+                  name=""
+                  id=""
+                  className="form-input"
+                  value={taskData.dueDate}
+                  onChange={(e) =>
+                    handleValueChange("LatinFullName", e.target.value)
+                  }
+                >
+                  <option value="">Select gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-12 gap-4 mt-3">
+              <div className="col-span-6 md:col-span-4">
+                <label className="text-xs font-medium text-slate-600">
+                  Birth date
+                </label>
+
+                <input
+                  className="form-input"
+                  value={taskData.dueDate}
+                  onChange={(e) =>
+                    handleValueChange("BirthDate", e.target.value)
+                  }
                   type="date"
                 />
               </div>
 
-              <div className="col-span-12 md:col-span-3">
+              <div className="col-span-6 md:col-span-4">
                 <label className="text-xs font-medium text-slate-600">
-                  Assign To
+                  City
                 </label>
 
-                <SelectUsers
-                  selectedUsers={taskData.assignedTo}
-                  setSelectedUsers={(value) => {
-                    handleValueChange("assignedTo", value);
-                  }}
+                <input
+                  placeholder="City"
+                  className="form-input"
+                  value={taskData.title}
+                  onChange={(e) => handleValueChange("City", e.target.value)}
+                />
+              </div>
+
+              <div className="col-span-6 md:col-span-4">
+                <label className="text-xs font-medium text-slate-600">
+                  Wilaya
+                </label>
+
+                <input
+                  placeholder="Wilaya"
+                  className="form-input"
+                  value={taskData.dueDate}
+                  onChange={(e) => handleValueChange("Wilaya", e.target.value)}
+                  type="text"
                 />
               </div>
             </div>
 
             <div className="mt-3">
-              <label className="text-xs font-medium text-slate-600">
-                TODO Checklist
-              </label>
+              <div className="col-span-6 md:col-span-4">
+                <label className="text-xs font-medium text-slate-600">
+                  Father full name
+                </label>
 
-              <TodoListInput
-                todoList={taskData?.todoCheckList}
-                setTodoList={(value) =>
-                  handleValueChange("todoCheckList", value)
-                }
-              />
-            </div>
+                <input
+                  placeholder="Father full name"
+                  className="form-input"
+                  value={taskData.Father}
+                  onChange={(e) => handleValueChange("Father", e.target.value)}
+                />
+              </div>
 
-            <div className="mt-3">
-              <label className="text-xs font-medium text-slate-600">
-                Add Attachments
-              </label>
+              <div className="col-span-6 md:col-span-4 mt-3">
+                <label className="text-xs font-medium text-slate-600">
+                Mother full name
+                </label>
 
-              <AddAttachmentsInput
-                attachemnts={taskData?.attachments}
-                setAttachemnts={(value) =>
-                  handleValueChange("attachments", value)
-                }
-              />
+                <input
+                  placeholder="Mother full name"
+                  className="form-input"
+                  value={taskData.Mother}
+                  onChange={(e) =>
+                    handleValueChange("Mother", e.target.value)
+                  }
+                  type="text"
+                />
+              </div>
             </div>
 
             {error && (
@@ -323,7 +352,7 @@ function CreateTask() {
                 onClick={handleSubmit}
                 disabled={loading}
               >
-                {taskId ? "UPDATE TASK" : "CREATE TASK"}
+                {taskId ? "UPDATE Record" : "Add Record"}
               </button>
             </div>
           </div>
@@ -333,10 +362,10 @@ function CreateTask() {
       <Modal
         isOpen={openDeleteAlert}
         onClose={() => setOpenDeleteAlert(false)}
-        title="Delete Task"
+        title="Delete Record"
       >
         <DeleteAlert
-          content="Are you sure you want to delete this task?"
+          content="Are you sure you want to delete this record?"
           onDelete={() => deleteTask()}
         />
       </Modal>
