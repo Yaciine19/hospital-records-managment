@@ -4,7 +4,7 @@ import axoisInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { LuFileSpreadsheet } from "react-icons/lu";
 import UserCard from "../../components/Cards/UserCard";
-import toast from "react-hot-toast";
+import { Link } from "react-router-dom";
 
 function ManageUsers() {
   const [allUsers, setAllUsers] = useState([]);
@@ -20,28 +20,6 @@ function ManageUsers() {
     }
   };
 
-  // Download task report
-  const handleDownloadReport = async () => {
-    try {
-      const response = await axoisInstance.get(API_PATHS.REPORT.EXPORT_USERS, {
-        responseType: "blob",
-      });
-
-      // Create a URL for the blob (binary large object)
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "users_details.xlsx");
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error Download Reporot : ", error);
-      toast.error("Failed to download expense details. Please try again.");
-    }
-  };
-
   useEffect(() => {
     getAllUsers();
 
@@ -54,10 +32,10 @@ function ManageUsers() {
         <div className="flex md:flex-row md:items-center justify-between">
           <h2 className="text-xl font-medium">Team Members</h2>
 
-          <button className="flex download-btn" onClick={handleDownloadReport}>
-            <LuFileSpreadsheet className="text-lg" />
-            Download Report
-          </button>
+          <Link to={"/admin/add-user"} className="flex items-center justify-center border px-6 py-2 bg-primary text-white font-medium hover:bg-blue-500 rounded">
+            <LuFileSpreadsheet className="text-lg mr-2" />
+            Add User
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">

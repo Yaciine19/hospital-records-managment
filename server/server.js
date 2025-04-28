@@ -6,6 +6,7 @@ import RecordRoute from './routes/RecordRoute.js';
 import UserRoute from './routes/UserRoute.js'
 import events from './routes/eventStream.js'
 import bodyParser from "body-parser";
+import { connectDB } from "./config/db.js";
 
 const PORT = 5000;
 
@@ -25,7 +26,8 @@ app.use('/', UserRoute);
 
 app.listen(PORT, async () => {
   try {
-    console.log(`server running ${PORT}`);
+    await connectDB();
+      console.log(`server running ${PORT}`);
   }
   catch (err) {
     console.log(err.message);
