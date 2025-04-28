@@ -94,7 +94,7 @@ function AddUser() {
           Role: userInfo.Role,
         }));
       }
-    } catch (error) {
+    } catch (error) {   
       console.error("Error fetching user data : ", error);
     }
   };
