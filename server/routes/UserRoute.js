@@ -9,5 +9,4 @@ router.get('/api/getUsers', getUsers);
 router.put('/api/updateUser', updateUser);
 router.delete('/api/deleteUser', deleteUser);
 
-
 export default router;

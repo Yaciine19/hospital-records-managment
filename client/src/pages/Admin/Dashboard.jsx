@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { useUserAuth } from "../../hooks/useUserAuth";
 import { UserContext } from "../../context/UserContext";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
-// import { useNavigate } from "react-router-dom";
 import axoisInstance from "../../utils/axiosInstance";
 import moment from "moment";
 import { API_PATHS } from "../../utils/apiPaths";
@@ -12,85 +11,52 @@ function Dashboard() {
   useUserAuth();
   const { user } = useContext(UserContext);
   const [records, setRecords] = useState([]);
-  // const navigate = useNavigate();
-
-  // const [birthEvents, setBirthEvents] = useState([]);
-  // const [deathEvents, setDeathEvents] = useState([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState(null);
-
-  // useEffect(() => {
-  //   const fetchInitialData = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const birthResponse = await axoisInstance.get("api/eventsBirth");
-  //       const deathResponse = await axoisInstance.get("api/eventsDeath");
-
-  //       setBirthEvents(birthResponse.data || []);
-  //       setDeathEvents(deathResponse.data || []);
-  //     } catch (err) {
-  //       console.error("Error fetching events: ", err);
-  //       setError(err);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchInitialData();
-  // }, []);
-
-  // useEffect(() => {
-  //   const birthEventSource = new EventSource('api/eventsBirth/stream');
-
-  //   birthEventSource.onmessage = (event) => {
-  //     const newEvent = JSON.parse(event.data);
-  //     setBirthEvents(prevEvents => [...prevEvents, newEvent]);
-  //   };
-
-  //   const deathEventSource = new EventSource('api/eventsDeath/stream');
-
-  //   deathEventSource.onmessage = (event) => {
-  //     const newEvent = JSON.parse(event.data);
-  //     setDeathEvents(prevEvents => [...prevEvents, newEvent]);
-  //   };
-
-  //   const handleError = (err) => {
-  //     console.error("EventSource error:", err);
-  //     setError(err);
-  //   };
-
-  //   birthEventSource.onerror = handleError;
-  //   deathEventSource.onerror = handleError;
-
-  //   return () => {
-  //     birthEventSource.close();
-  //     deathEventSource.close();
-  //   };
-  // }, []);
   
-
-  // if(loading || error) {
-  //   return <div><h1>error or loading</h1></div>
-  // }
-
-  const GetAllRecords = async () => {
-    try {
-      const response = await axoisInstance.get(
-        API_PATHS.RECORD.GET_ALL_RECORD
-      );
-
-      if (response.data) {
-        setRecords(response.data)
+  useEffect(() => {
+    // Use absolute URLs to ensure correct path resolution
+    const birthEventSource = new EventSource('http://localhost:5000/api/eventsBirth');
+    birthEventSource.onmessage = (event) => {
+      const newEvent = JSON.parse(event.data);
+      setRecords(prevEvents => [...prevEvents, newEvent]);
+    };
+    
+    const deathEventSource = new EventSource('http://localhost:5000/api/eventsDeath');
+    deathEventSource.onmessage = (event) => {
+      const newEvent = JSON.parse(event.data);
+      setRecords(prevEvents => [...prevEvents, newEvent]);
+    };
+    
+    const handleError = (err) => {
+      console.error("EventSource error:", err);
+    };
+    
+    birthEventSource.onerror = handleError;
+    deathEventSource.onerror = handleError;
+    
+    return () => {
+      birthEventSource.close();
+      deathEventSource.close();
+    };
+  }, []);
+  
+  // Fetch all records
+  useEffect(() => {
+    const getAllRecords = async () => {
+      try {
+        const response = await axoisInstance.get(
+          API_PATHS.RECORD.GET_ALL_RECORD
+        );
+        if (response.data) {
+          setRecords(response.data);
+        }
+      } catch (error) {
+        console.error("Error fetching records: ", error);
       }
-    } catch (error) {
-      console.error("Error fetching records: ", error);
-    }
-  };
-
-  useEffect(()=> {
-    GetAllRecords();
-  }, [])
-
+    };
+    
+    getAllRecords();
+  }, []);
+  
   return (
     <DashboardLayout activeMenu="Dashboard">
       <div className="card my-5">
@@ -102,19 +68,15 @@ function Dashboard() {
             </p>
           </div>
         </div>
-
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-6 mt-5">
         </div>
       </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap6 my-4 md:my-6">
-
         <div className="md:col-span-2">
           <div className="card">
             <div className="flex items-center justify-between">
               <h5 className="text-lg">Recent Records</h5>
             </div>
-
             <RecordsTable tableData={records} />
           </div>
         </div>

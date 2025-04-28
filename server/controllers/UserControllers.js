@@ -1,7 +1,7 @@
 import  User  from '../models/User.js';
-import { connectDB, disconnectDB } from '../config/db.js';
+import { connectDB } from '../config/db.js';
 
-export const getUsers = async (req, res) => {
+export const getUsers = async (_, res) => {
     try {
         await connectDB();
 

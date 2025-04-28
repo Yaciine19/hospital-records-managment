@@ -1,5 +1,5 @@
 import Anonym from '../models/Anonym.js';
-import { connectDB, disconnectDB } from '../config/db.js';
+import { connectDB } from '../config/db.js';
 
 export const createAnonym = async (data) => {
     try {
@@ -22,7 +22,7 @@ export const createAnonym = async (data) => {
     }
 };
 
-export const getAnonyms = async (req, res) => {
+export const getAnonyms = async (_, res) => {
     try {
         await connectDB();
         const anonymRecords = await Anonym.find();

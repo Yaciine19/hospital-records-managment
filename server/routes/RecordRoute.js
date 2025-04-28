@@ -1,6 +1,5 @@
 import express from 'express';
 import { addRecord, deleteRecord, getRecords, updateRecord } from '../controllers/RecordControllers.js';
-import { protect } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
