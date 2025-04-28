@@ -42,7 +42,7 @@ const prepareHeaders = (res) => {
   res.flushHeaders();
 };
 
-router.get("/eventsDeath", function(req, res) {
+router.get("api/eventsDeath", function(req, res) {
   prepareHeaders(res);
   
   deathClients.add(res);
@@ -59,7 +59,7 @@ router.get("/eventsDeath", function(req, res) {
   });
 });
 
-router.get("/eventsBirth", function(req, res) {
+router.get("api/eventsBirth", function(req, res) {
   prepareHeaders(res);
 
   birthClients.add(res);
