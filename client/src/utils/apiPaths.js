@@ -1,10 +1,10 @@
-export const BASE_URL = "http://localhost:8000";
+export const BASE_URL = "http://localhost:5000";
 
 // utils/apiPaths.js
 export const API_PATHS = {
   AUTH: {
     REGISTER: "/api/auth/register", // Register a new user (Admin or Member)
-    LOGIN: "/api/auth/login", // Authenticate user & return JWT token
+    LOGIN: "/api/v1/auth/login", // Authenticate user & return JWT token
     GET_PROFILE: "/api/auth/profile", // Get logged-in user details
   },
 
