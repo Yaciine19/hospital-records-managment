@@ -8,5 +8,4 @@ router.get('/api/getRecords', getRecords);
 router.put('/api/updateRecord', updateRecord);
 router.delete('/api/deleteRecord', deleteRecord);
 
-
 export default router;
