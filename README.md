@@ -28,6 +28,7 @@ This system provides a comprehensive solution for recording, managing, and monit
 - **bcrypt** - Password hashing
 - **Server-Sent Events** - Real-time notifications
 - **react** - Javascript framework to crate robust single page apps
+**react-router-dom** - React router to navigate between pages
 - **axios** - A promise-based HTTP Client for node.js and the browser
 - **tailwindcss** - An open source CSS framework
 
