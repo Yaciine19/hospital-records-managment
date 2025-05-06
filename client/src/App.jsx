@@ -14,6 +14,7 @@ import UserProvider, { UserContext } from "./context/UserContext";
 import { useContext } from "react";
 import { Toaster } from "react-hot-toast";
 import AddUser from "./pages/Admin/AddUser";
+import AjoutDeces from "./pages/Admin/AjoutDeces";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
             <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
               <Route path="/admin/dashboard" element={<Dashboard />} />
               <Route path="/admin/add-record" element={<AddRecord/>} />
+              <Route path="/admin/ajout-deces" element={<AjoutDeces/>} />
               <Route path="/admin/users" element={<ManageUsers />} />
               <Route path="/admin/add-user" element={<AddUser />} />
             </Route>
@@ -60,7 +62,7 @@ const Root = () => {
     return <Navigate to={"/login"} />;
   }
 
-  return user.role === "adimn" ? (
+  return user.role === "Admin" ? (
     <Navigate to={"/admin/dashboard"} />
   ) : (
     <Navigate to={"/user/dashboard"} />

@@ -21,6 +21,24 @@ export const SIDE_MENU_DATA = [
   },
   {
     id: "03",
+    label: "Ajout Deces",
+    icon: LuSquarePlus,
+    path: "/admin/ajout-deces",
+  },
+  {
+    id: "03",
+    label: "Add APC",
+    icon: LuSquarePlus,
+    path: "/admin/add-apc",
+  },
+  {
+    id: "03",
+    label: "Add DSP",
+    icon: LuSquarePlus,
+    path: "/admin/add-dsp",
+  },
+  {
+    id: "03",
     label: "All Employees",
     icon: LuUsers,
     path: "/admin/users",

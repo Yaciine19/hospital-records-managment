@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 import User from "../models/User.js";
-import { connectDB } from '../config/db.js';
 
 // Generate JWT Token
 const generateToken = (userId) => {
@@ -12,7 +12,6 @@ const generateToken = (userId) => {
 // @access Private (Admin only)
 export const registerUser = async (req, res) => {
   try {
-    await connectDB();
     const { PhoneNumber, Password, Organization, FullName, Role } = req.body;
 
     const userExists = await User.findOne({ PhoneNumber });
@@ -21,10 +20,14 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ message: "User already exsits" });
     }
 
+    const salt = await bcrypt.genSalt(10);
+
+    const hashPassword = await bcrypt.hash(Password, salt);
+
     const newUser = await User.create({
       FullName,
       PhoneNumber,
-      Password,
+      Password: hashPassword,
       Organization,
       Role,
     });
@@ -52,7 +55,7 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid phone number or password" });
     }
 
-    const isMatch = Password == user.Password;
+    const isMatch = await bcrypt.compare(Password, user.Password);
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid phone number or password" });
     }
